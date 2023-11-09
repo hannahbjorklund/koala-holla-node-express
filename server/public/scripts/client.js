@@ -42,9 +42,9 @@ function renderKoalas(koalas){
   for(let koala of koalas){
     let readyText
     if (koala.ready_to_transfer === true) {
-      readyText = ' disabled'
-    } else {
       readyText = ''
+    } else {
+      readyText = `<button onclick="saveKoala(${koala.id})">Ready</button>`
     }
 
     koalaEnclosure.innerHTML += `
@@ -52,12 +52,24 @@ function renderKoalas(koalas){
       <td>${koala.name}</td>
       <td>${koala.gender}</td>
       <td>${koala.age}</td>
-      <td><button${readyText} onclick="saveKoala(${koala.id})">Ready</button></td>
+      <td>${readyText}</td>
       <td>${koala.ready_to_transfer}</td>
       <td>${koala.notes}</td>
+      <td><button onclick="retireKoala(${koala.id})">Retire</button></td>
     </tr>
     `
   }
+}
+
+function retireKoala(koalaId) {
+  console.log('in retire');
+  axios({
+    method: 'DELETE',
+    url: `/koalas/${koalaId}`
+  })
+  .then((response) => {
+    getKoalas();
+  })
 }
 
 function addKoala(event){
