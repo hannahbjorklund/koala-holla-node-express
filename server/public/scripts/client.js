@@ -19,7 +19,7 @@ function getKoalas(){
 function saveKoala(){
   console.log( 'in saveKoala' );
   // axios call to server to get koalas
- 
+  
 }
 
 function renderKoalas(koalas){
@@ -30,11 +30,19 @@ function renderKoalas(koalas){
 
   // Loop through the koalas and display each one
   for(let koala of koalas){
+    let readyText
+    if (koala.ready_to_transfer === true) {
+      readyText = ' disabled'
+    } else {
+      readyText = ''
+    }
+
     koalaEnclosure.innerHTML += `
     <tr>
       <td>${koala.name}</td>
       <td>${koala.gender}</td>
       <td>${koala.age}</td>
+      <td><button${readyText} onclick="saveKoala()">Ready</button></td>
       <td>${koala.ready_to_transfer}</td>
       <td>${koala.notes}</td>
     </tr>
