@@ -16,10 +16,20 @@ function getKoalas(){
   
 } // end getKoalas
 
-function saveKoala(){
+function saveKoala(koalaId){
   console.log( 'in saveKoala' );
   // axios call to server to get koalas
-  
+  axios({
+    method: 'PUT',
+    url: `/koalas/${koalaId}`,
+  })
+  .then((response) => {
+    console.log('PUT request successful!')
+    getKoalas()
+  })
+  .catch((error) => {
+    console.error('ERROR!! ERROR!! ERROR!! PUUTT request failed')
+  })
 }
 
 function renderKoalas(koalas){
@@ -42,7 +52,7 @@ function renderKoalas(koalas){
       <td>${koala.name}</td>
       <td>${koala.gender}</td>
       <td>${koala.age}</td>
-      <td><button${readyText} onclick="saveKoala()">Ready</button></td>
+      <td><button${readyText} onclick="saveKoala(${koala.id})">Ready</button></td>
       <td>${koala.ready_to_transfer}</td>
       <td>${koala.notes}</td>
     </tr>

@@ -46,7 +46,24 @@ koalaRouter.post('/', (req, res) => {
 })
 
 // PUT
+koalaRouter.put('/:id', (req, res) => {
+    let idOfKoalaToSave = req.params.id;
+    const sqlQueryText =`
+    UPDATE "koalas"
+    SET "ready_to_transfer" = true
+    WHERE "id" = $1;
+    `
+    const sqlQueryValues = [idOfKoalaToSave];
 
+    pool.query(sqlQueryText, sqlQueryValues)
+    .then((dbResult) => {
+        res.sendStatus(200);
+    })
+    .catch((dbError) => {
+        console.log('🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️🙅‍♂️')
+        res.sendStatus(500)
+    })
+})
 
 // DELETE
 
