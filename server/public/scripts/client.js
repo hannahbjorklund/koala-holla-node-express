@@ -1,4 +1,5 @@
 console.log( 'js' );
+// const Swal = require('sweetalert2')
 
 function getKoalas(){
   console.log( 'in getKoalas' );
@@ -16,12 +17,13 @@ function getKoalas(){
   
 } // end getKoalas
 
-function saveKoala(koalaId){
+function saveKoala(isReady, koalaId){
   console.log( 'in saveKoala' );
   // axios call to server to get koalas
   axios({
     method: 'PUT',
     url: `/koalas/${koalaId}`,
+    data: {isReady: isReady}
   })
   .then((response) => {
     console.log('PUT request successful!')
@@ -40,19 +42,19 @@ function renderKoalas(koalas){
 
   // Loop through the koalas and display each one
   for(let koala of koalas){
-    let readyText
-    if (koala.ready_to_transfer === true) {
-      readyText = ''
-    } else {
-      readyText = `<button onclick="saveKoala(${koala.id})">Ready</button>`
-    }
+    // let readyText
+    // if (koala.ready_to_transfer === true) {
+    //   readyText = ''
+    // } else {
+    //   readyText = `<button onclick="saveKoala(${koala.id})">Ready</button>`
+    // }
 
     koalaEnclosure.innerHTML += `
     <tr>
       <td>${koala.name}</td>
       <td>${koala.gender}</td>
       <td>${koala.age}</td>
-      <td>${readyText}</td>
+      <td>${koala.ready_to_transfer != true ? `<button onclick="saveKoala(false, ${koala.id})">Mark Ready</button>`: `<button onclick="saveKoala(true, ${koala.id})">Mark Unready</button>`}</td>
       <td>${koala.ready_to_transfer}</td>
       <td>${koala.notes}</td>
       <td><button onclick="retireKoala(${koala.id})">Retire</button></td>
@@ -62,6 +64,21 @@ function renderKoalas(koalas){
 }
 
 function retireKoala(koalaId) {
+  // Swal.fire({
+  //   title: 'Are you sure!',
+  //   text: 'Are you sure you want to retire this poor baby koala?',
+  //   icon: 'question',
+  //   showCancelButton: true,
+  //   confirmButtonText: 'Yes, I have no heart'
+  // }).then((result) => {
+  //   if(result.isConfirmed) {
+  //     Swal.fire({
+  //       title: "Retired. :(",
+  //       text: "you\re a monster!",
+  //       icon: "success"
+  //     })
+  //   }
+  // })
   console.log('in retire');
   axios({
     method: 'DELETE',

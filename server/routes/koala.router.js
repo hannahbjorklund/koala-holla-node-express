@@ -8,6 +8,7 @@ const pool = require('../modules/pool');
 koalaRouter.get('/', (req, res) => {
     const sqlQueryText = `
     SELECT * FROM "koalas"
+    ORDER BY "id"
     `
 
     pool.query(sqlQueryText)
@@ -48,12 +49,16 @@ koalaRouter.post('/', (req, res) => {
 // PUT
 koalaRouter.put('/:id', (req, res) => {
     let idOfKoalaToSave = req.params.id;
+    let isReady = req.body.isReady;
+    console.log(isReady);
+
     const sqlQueryText =`
     UPDATE "koalas"
-    SET "ready_to_transfer" = true
+    SET "ready_to_transfer" = $2
     WHERE "id" = $1;
     `
-    const sqlQueryValues = [idOfKoalaToSave];
+    console.log(!isReady);
+    const sqlQueryValues = [idOfKoalaToSave, !isReady];
 
     pool.query(sqlQueryText, sqlQueryValues)
     .then((dbResult) => {
