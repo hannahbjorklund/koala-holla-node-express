@@ -42,4 +42,44 @@ function renderKoalas(koalas){
   }
 }
 
+function addKoala(event){
+  event.preventDefault();
+
+  // Collect user input data and put into a koala object
+  let newKoalaName = document.getElementById('nameIn').value; 
+  let newKoalaGender = document.getElementById('genderIn').value; 
+  let newKoalaAge = document.getElementById('ageIn').value; 
+  let newKoalaTransfer = document.getElementById('readyForTransferIn').value; 
+  let newKoalaNotes = document.getElementById('notesIn').value; 
+
+  let newKoala = {
+    name: newKoalaName,
+    gender: newKoalaGender,
+    age: newKoalaAge,
+    ready_to_transfer: newKoalaTransfer,
+    notes: newKoalaNotes
+  };
+
+  // Axios POST request
+  axios({
+    method: 'POST',
+    url: '/koalas',
+    data: newKoala
+  })
+  .then((response) =>{
+    console.log('POST request succesful! response:', response)
+    getKoalas();
+  })
+  .catch((error) => {
+    console.error('Oh no, the POST request failed :<')
+  })
+
+  document.getElementById('nameIn').value = '';
+  document.getElementById('genderIn').value = '';
+  document.getElementById('ageIn').value = '';
+  document.getElementById('readyForTransferIn').value = '';
+  document.getElementById('notesIn').value = '';
+
+}
+
 getKoalas();
